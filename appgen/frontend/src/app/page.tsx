@@ -4,11 +4,11 @@ import React, { useState, useRef, useCallback } from "react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface StageData {
-  intent?: unknown;
-  design?: unknown;
-  schemas?: unknown;
-  validation?: unknown;
-  runtime?: unknown;
+  intent?: any;
+  design?: any;
+  schemas?: any;
+  validation?: any;
+  runtime?: any;
 }
 
 
@@ -22,7 +22,7 @@ interface PipelineResult {
   meta: { total_latency_ms: number; stage_latencies: Record<string, number>; total_retries: number; assumptions: string[]; ambiguities: string[] };
 }
 
-type TabKey = "intent" | "design" | "schema" | "validation" | "runtime" | "sql" | "routes" | "full";
+type TabKey = "intent" | "design" | "schemas" | "validation" | "runtime" | "sql" | "routes" | "full";
 
 const STAGES = [
   { key: "intent", label: "Intent Extraction", icon: "01", desc: "Parsing natural language" },
@@ -255,7 +255,7 @@ export default function Home() {
   const tabs: { key: TabKey; label: string }[] = [
     { key: "intent", label: "Intent" },
   { key: "design", label: "Design" },
-  { key: "schema", label: "Schemas" },
+  { key: "schemas", label: "Schemas" },
   { key: "validation", label: "Validation" },
     { key: "runtime", label: "Runtime" },
     { key: "sql", label: "SQL DDL" },
@@ -408,7 +408,7 @@ export default function Home() {
             <div>
               {activeTab === "intent" && <JSONViewer data={result.intent} />}
               {activeTab === "design" && <JSONViewer data={result.design} />}
-              {activeTab === "schema" && <JSONViewer data={result.schema} />}
+              {activeTab === "schemas" && <JSONViewer data={result.schema} />}
               {activeTab === "validation" && (
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   <div style={{ background: result.validation.passed ? "rgba(34,197,94,0.08)" : "rgba(245,158,11,0.08)", border: `1px solid ${result.validation.passed ? "rgba(34,197,94,0.3)" : "rgba(245,158,11,0.3)"}`, borderRadius: 8, padding: 16 }}>

@@ -10,12 +10,12 @@ app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 
 // ── Health check ─────────────────────────────────────────────────────────────
-app.get("/health", (_req, res) => {
+app.get("/health", (_req: express.Request, res: express.Response) => {
   res.json({ status: "ok", version: "1.0.0" });
 });
 
 // ── Main pipeline endpoint ────────────────────────────────────────────────────
-app.post("/api/generate", async (req, res) => {
+app.post("/api/generate", async (req: express.Request, res: express.Response) => {
   const { prompt } = req.body;
 
   if (!prompt || typeof prompt !== "string" || prompt.trim().length < 3) {
@@ -55,7 +55,7 @@ app.post("/api/generate", async (req, res) => {
 });
 
 // ── Streaming endpoint (SSE) ──────────────────────────────────────────────────
-app.post("/api/generate/stream", async (req, res) => {
+app.post("/api/generate/stream", async (req: express.Request, res: express.Response) => {
   const { prompt } = req.body;
 
   if (!prompt || typeof prompt !== "string") {

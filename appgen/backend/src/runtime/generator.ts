@@ -8,7 +8,7 @@ export function generateSQL(schema: AppSchema): string {
   for (const table of schema.db_schema.tables) {
     lines.push(`CREATE TABLE IF NOT EXISTS "${table.name}" (`);
 
-    const colDefs = table.columns.map((col) => {
+    const colDefs = table.columns.map((col: any) => {
       let def = `  "${col.name}" ${col.type}`;
       if (col.primary_key) def += " PRIMARY KEY";
       if (col.not_null) def += " NOT NULL";
@@ -25,7 +25,7 @@ export function generateSQL(schema: AppSchema): string {
 
     for (const idx of table.indexes) {
       const unique = idx.unique ? "UNIQUE " : "";
-      const cols = idx.columns.map((c) => `"${c}"`).join(", ");
+      const cols = idx.columns.map((c: any) => `"${c}"`).join(", ");
       lines.push(
         `CREATE ${unique}INDEX IF NOT EXISTS "idx_${table.name}_${idx.columns.join("_")}" ON "${table.name}" (${cols});`
       );
@@ -134,7 +134,7 @@ export function generateHTMLPages(schema: AppSchema): Record<string, string> {
 
   for (const page of schema.ui_schema.pages) {
     const componentsHTML = page.components
-      .map((comp) => {
+      .map((comp: any) => {
         if (comp.type === "form") {
           const fields = comp.fields
             .map(
@@ -144,7 +144,7 @@ export function generateHTMLPages(schema: AppSchema): Record<string, string> {
           ${
             f.input_type === "select"
               ? `<select id="${f.name}" name="${f.name}" ${f.required ? "required" : ""}>
-            ${(f.options || []).map((o) => `<option value="${o}">${o}</option>`).join("")}
+            ${(f.options || []).map((o: any) => `<option value="${o}">${o}</option>`).join("")}
           </select>`
               : f.input_type === "textarea"
               ? `<textarea id="${f.name}" name="${f.name}" ${f.required ? "required" : ""}></textarea>`
@@ -218,7 +218,7 @@ export function generateHTMLPages(schema: AppSchema): Record<string, string> {
 <body>
   <nav>
     <strong style="color:white;margin-right:1rem">${schema.ui_schema.app_name}</strong>
-    ${schema.ui_schema.nav_items.map((n) => `<a href="${n.path}">${n.label}</a>`).join("")}
+    ${schema.ui_schema.nav_items.map((n: any) => `<a href="${n.path}">${n.label}</a>`).join("")}
   </nav>
   <div class="page-header"><h1>${page.title}</h1></div>
   <div class="content">
@@ -266,11 +266,11 @@ export function generateHTMLPages(schema: AppSchema): Record<string, string> {
 // ─── Simulate Runtime Execution ──────────────────────────────────────────────
 
 export function simulateRuntime(schema: AppSchema): RuntimeOutput {
-  const tables_created = schema.db_schema.tables.map((t) => t.name);
+  const tables_created = schema.db_schema.tables.map((t: any) => t.name);
   const routes_registered = schema.api_schema.endpoints.map(
-    (e) => `${e.method} ${schema.api_schema.base_path}${e.path}`
+    (e: any) => `${e.method} ${schema.api_schema.base_path}${e.path}`
   );
-  const pages_generated = schema.ui_schema.pages.map((p) => p.path);
+  const pages_generated = schema.ui_schema.pages.map((p: any) => p.path);
 
   return { tables_created, routes_registered, pages_generated };
 }
